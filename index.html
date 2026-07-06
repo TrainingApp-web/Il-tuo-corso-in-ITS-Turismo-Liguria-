@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<base target="_blank">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>ITS Turismo Liguria — Orientamento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#C8DFF0; --card:rgba(255,255,255,.92); --card2:rgba(255,255,255,.65);
+  --navy:#1D3557; --navyM:#2A5A80; --navyL:#4A7BA0;
+  --gold:#C8911A; --goldL:#E8A820;
+  --mint:#2E8B6A; --border:rgba(29,53,87,.13); --r:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 65% 50% at 10% 10%,rgba(255,255,255,.55) 0%,transparent 65%),
+             radial-gradient(ellipse 50% 45% at 90% 90%,rgba(160,205,235,.5) 0%,transparent 60%)}
+.app{position:relative;z-index:1;max-width:540px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+
+/* SCREENS */
+.screen{display:none;flex-direction:column;flex:1;padding:0 22px 52px}
+.screen.active{display:flex;animation:up .4s ease both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;padding:24px 0 0}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+
+.logo-name{font-size:12.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);line-height:1.2}
+.logo-sub{font-size:8.5px;color:var(--navyL);letter-spacing:.2px;margin-top:2px}
+
+/* INTRO */
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding:28px 0 24px}
+.itag{font-size:11px;font-weight:600;color:var(--mint);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.itag::before{content:'';width:22px;height:2px;background:var(--mint);border-radius:1px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(34px,9vw,50px);font-weight:900;line-height:1.08;margin-bottom:18px;color:var(--navy)}
+h1 em{font-style:italic;color:var(--gold)}
+.desc{font-size:14px;line-height:1.8;color:var(--navyM);margin-bottom:26px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+.pill{background:rgba(29,53,87,.08);border:1.5px solid rgba(29,53,87,.15);border-radius:24px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--navyM)}
+.info-line{font-size:12px;color:var(--navyL);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.info-line::before{content:'';width:16px;height:1.5px;background:var(--gold);border-radius:1px}
+
+/* BUTTONS */
+.btn{background:var(--navy);color:#fff;border:none;border-radius:14px;padding:16px 28px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{background:#2A5A8A;transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,53,87,.2)}
+.btn:active{transform:none;box-shadow:none}
+.btn-ghost{background:transparent;border:1.5px solid rgba(29,53,87,.2);color:var(--navyM);border-radius:14px;padding:13px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;width:100%;transition:all .2s;margin-top:10px}
+.btn-ghost:hover{border-color:rgba(29,53,87,.4);color:var(--navy)}
+
+/* QUESTION */
+.qhdr{display:flex;align-items:center;justify-content:space-between;padding-top:22px;margin-bottom:12px}
+.qnum{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1.5px}
+.qstep{font-size:11px;color:var(--navyL)}
+.pbar{height:3px;background:rgba(29,53,87,.12);border-radius:2px;margin-bottom:26px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldL));border-radius:2px;transition:width .4s}
+.qscene{font-size:11px;font-weight:600;color:var(--mint);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.qscene::before{content:'';width:18px;height:1.5px;background:var(--mint);border-radius:1px}
+.qtxt{font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,24px);font-weight:700;line-height:1.3;margin-bottom:22px;color:var(--navy)}
+.opts{display:flex;flex-direction:column;gap:10px;flex:1}
+.opt{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:12px;box-shadow:0 2px 8px rgba(29,53,87,.06)}
+.opt:hover{border-color:rgba(200,145,26,.6);background:#fff;transform:translateX(3px)}
+.opt.sel{border-color:var(--gold);background:rgba(200,145,26,.08)}
+.oic{font-size:21px;flex-shrink:0;margin-top:1px}
+.olb{font-size:10px;font-weight:700;color:var(--navyL);letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
+.obody{font-size:12.5px;line-height:1.5;color:var(--navyM)}
+
+/* LOADING */
+#loading{justify-content:center;align-items:center;gap:28px;text-align:center}
+.lring{width:52px;height:52px;border:3px solid rgba(29,53,87,.15);border-top-color:var(--gold);border-radius:50%;animation:spin .75s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ltxt{font-family:'Playfair Display',serif;font-size:18px;color:var(--navyM)}
+
+/* RESULT */
+.rhdr{padding-top:22px;margin-bottom:20px}
+.rlabel{font-size:11px;font-weight:600;color:var(--mint);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.rlabel::before{content:'';width:18px;height:1.5px;background:var(--mint);border-radius:1px}
+.rtitle{font-family:'Playfair Display',serif;font-size:clamp(22px,7vw,34px);font-weight:900;line-height:1.1;color:var(--navy)}
+.rcard{background:#fff;border:1.5px solid rgba(200,145,26,.22);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:0 4px 18px rgba(29,53,87,.08);animation:up .5s .1s ease both}
+.rch{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ric{font-size:30px;width:54px;height:54px;background:rgba(200,145,26,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid rgba(200,145,26,.2)}
+.rcn{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;line-height:1.2;color:var(--navy)}
+.rct{font-size:11px;color:var(--gold);font-weight:600;margin-top:3px}
+.rwhy{font-size:12.5px;line-height:1.75;color:var(--navyM);margin-bottom:16px;padding-bottom:16px;border-bottom:1.5px solid rgba(29,53,87,.08)}
+.rsec{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:9px}
+.rlabs{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.litem{display:flex;align-items:flex-start;gap:9px}
+.ldot{width:5px;height:5px;min-width:5px;background:var(--gold);border-radius:50%;margin-top:6px}
+.ltext{font-size:12px;line-height:1.4;color:var(--navy)}
+.lhigh{color:var(--navyL);font-size:10px;font-weight:600;display:block;margin-top:1px}
+.dline{height:1.5px;background:rgba(29,53,87,.08);margin:14px 0}
+.rjobs{display:flex;flex-wrap:wrap;gap:6px}
+.jpill{background:rgba(29,53,87,.06);border:1.5px solid rgba(29,53,87,.12);border-radius:20px;padding:5px 11px;font-size:11px;color:var(--navyM);font-weight:500}
+.scard{background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(29,53,87,.05);animation:up .5s .25s ease both}
+.sn{font-size:14.5px;font-weight:600;color:var(--navy)}
+.st{font-size:10px;color:var(--navyL);margin-top:2px}
+.sdiff{font-size:12.5px;line-height:1.65;color:var(--navyM);margin-top:8px}
+
+/* CONTACT BOX */
+.contact-sec{margin-top:20px;animation:up .5s .35s ease both}
+.contact-divider{height:2.5px;background:linear-gradient(90deg,var(--gold),rgba(200,145,26,.15));border-radius:2px;margin-bottom:22px}
+.contact-prompt{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;font-style:italic;color:var(--navy);line-height:1.35;margin-bottom:6px}
+.contact-sub{font-size:12.5px;color:var(--navyM);margin-bottom:16px;line-height:1.5}
+.contact-input{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--navy);transition:border-color .2s;margin-bottom:12px}
+.contact-input:focus{outline:none;border-color:var(--gold)}
+.contact-input::placeholder{color:var(--navyL)}
+.contact-privacy{font-size:11px;color:var(--navyL);margin-bottom:16px;line-height:1.5}
+.contact-btn{background:var(--gold);color:#fff;border:none;border-radius:14px;padding:15px 28px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;transition:all .2s}
+.contact-btn:hover{background:var(--goldL);transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,145,26,.25)}
+.contact-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.contact-ok{display:none;margin-top:16px;background:#fff;border:1.5px solid rgba(46,139,106,.3);border-radius:14px;padding:18px 20px;text-align:center;animation:up .4s ease both}
+.contact-ok-icon{font-size:32px;margin-bottom:8px}
+.contact-ok-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.contact-ok-txt{font-size:13px;color:var(--navyM);line-height:1.6}
+
+/* FOOTER */
+.its-contacts{margin-top:20px;padding-top:18px;border-top:1.5px solid rgba(29,53,87,.10);font-size:12px;color:var(--navyM);text-align:center;line-height:1.9}
+.its-contacts strong{color:var(--navy);font-weight:700}
+.rfooter{margin-top:20px;padding-top:4px}
+
+.course-link{display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--navy);color:#fff;text-decoration:none;
+  border-radius:14px;padding:15px 24px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:14px;font-weight:700;margin-top:18px;margin-bottom:4px;
+  transition:all .2s;text-align:center}
+.course-link:hover{background:#2A5A8A;transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(29,53,87,.2)}
+.course-link-sec{display:flex;align-items:center;justify-content:center;gap:8px;
+  background:transparent;color:var(--navyM);text-decoration:none;
+  border:1.5px solid rgba(29,53,87,.2);border-radius:14px;padding:12px 20px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;
+  margin-top:8px;transition:all .2s;text-align:center}
+.course-link-sec:hover{border-color:rgba(29,53,87,.4);color:var(--navy)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- INTRO -->
+<div class="screen active" id="intro">
+  <div class="topbar">
+    <div class="logo-wrap">
+      
+      <div>
+        <div class="logo-name">ITS Turismo Liguria</div>
+        <div class="logo-sub">academy of tourism, culture and hospitality</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero">
+    <div class="itag">Orientamento</div>
+    <h1>Scopri il percorso<br>fatto <em>per te</em></h1>
+    <p class="desc">10 domande. Nessuna risposta giusta o sbagliata.<br>Solo le tue passioni, il tuo stile e dove vuoi arrivare.</p>
+    <div class="pills">
+      <span class="pill">🍷 F&amp;B Manager</span>
+      <span class="pill">🏨 Gestione Strutture</span>
+      <span class="pill">🎪 Manager di Eventi</span>
+    </div>
+    <div class="info-line">Corso biennale gratuito &middot; Liguria</div>
+    <button class="btn" id="startBtn">Inizia il test &rarr;</button>
+  </div>
+</div>
+
+<!-- DOMANDA -->
+<div class="screen" id="question">
+  <div class="qhdr">
+    <div class="qnum" id="qnum">01 / 10</div>
+    <div class="qstep">ITS Turismo Liguria</div>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill" style="width:10%"></div></div>
+  <div class="qscene" id="qscene"></div>
+  <div class="qtxt"   id="qtxt"></div>
+  <div class="opts"   id="opts"></div>
+</div>
+
+<!-- CARICAMENTO -->
+<div class="screen" id="loading">
+  <div class="lring"></div>
+  <div class="ltxt">Sto preparando il tuo percorso&hellip;</div>
+</div>
+
+<!-- RISULTATO -->
+<div class="screen" id="result">
+  <div class="rhdr">
+    <div class="rlabel">Il tuo percorso ideale</div>
+    <div class="rtitle">Il tuo percorso &egrave;:</div>
+  </div>
+
+  <div id="rcontent"></div>
+
+  <!-- FORM CONTATTO -->
+  <div class="contact-sec" id="contactSec">
+    <div class="contact-divider"></div>
+    <div class="contact-prompt">Vuoi ricevere informazioni?</div>
+    <div class="contact-sub">Lascia la tua mail o il tuo numero — ti contattiamo noi.</div>
+    <input class="contact-input" id="contactInput" type="text"
+           placeholder="Es. mario.rossi@email.it oppure 333 1234567">
+    <div class="contact-privacy">
+      Inviando acconsenti al trattamento dei dati per essere ricontattato da ITS Turismo Liguria.
+    </div>
+    <button class="contact-btn" id="contactBtn">Invia &rarr;</button>
+    <div class="contact-ok" id="contactOk">
+      <div class="contact-ok-icon">✅</div>
+      <div class="contact-ok-title">Ricevuto, grazie!</div>
+      <div class="contact-ok-txt">Ti contatteremo presto con tutte le informazioni<br>sul percorso <strong id="contactCourseName"></strong>.</div>
+    </div>
+  </div>
+
+  <!-- CONTATTI ITS -->
+  <div class="its-contacts">
+    Per saperne di pi&ugrave; visita <strong>itsturismoliguria.it</strong><br>
+    o scrivi a <strong>segreteria@itsturismoliguria.it</strong>
+  </div>
+
+  <div class="rfooter">
+    <button class="btn"       id="restartBtn">&larr; Rifai il test</button>
+    <button class="btn-ghost" id="homeBtn">Torna all'inizio</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- DATI -->
+<script id="cdata" type="application/json">{"F": {"name": "Food & Beverage Manager", "tag": "L'artigiano dell'esperienza", "icon": "🍷", "why": "La tua è una sensibilità per il gusto, la cura del dettaglio e il piacere di far stare bene le persone. Non vuoi solo servire — vuoi costruire qualcosa di memorabile tra sala, cantina e banco bar. In questo corso imparerai a trasformare quella sensibilità in una professione.", "labs": [{"t": "Blind tasting in cantina attrezzata", "h": "Analisi visiva, olfattiva e gustativa di vini liguri DOC"}, {"t": "Banco bar professionale", "h": "Miscelazione, shaker, cocktail signature con prodotti del territorio"}, {"t": "Caffè specialty e latte art", "h": "Estrazione espresso, microfoam, cold brew"}, {"t": "Food design e impiattamento", "h": "Composizione visiva, food styling per i social e per il menu"}, {"t": "Sensory analysis: olio e cioccolato", "h": "Metodo strutturato di degustazione con schede professionali"}], "eng": "Presentare carta vini e prodotti tipici liguri a ospiti stranieri · Microlingua del servizio di sala", "terr": "Cantine DOC Riviera Ligure · Frantoi Taggiasca · Produttori pesto e acciughe · Birrifici artigianali", "jobs": ["F&B Manager hotel/resort", "Bar Manager", "Head Sommelier", "Supervisor navi da crociera", "Food Tourism Manager", "Aprire il proprio locale"], "url": "https://www.itsturismoliguria.it/corso-food-beverage-manager/"}, "G": {"name": "Gestione Strutture Ricettive", "tag": "Il cervello dell'ospitalità", "icon": "🏨", "why": "Pensi in termini di processi, organizzazione e risultati. Ti piace capire come funziona un sistema e renderlo più efficiente. Vuoi che l'hotel giri come un orologio, che i numeri migliorino, che il team lavori bene.", "labs": [{"t": "Simulazioni di gestione hotel con software reale", "h": "Prenotazioni, check-in, disponibilità camere, comunicazione con i clienti"}, {"t": "Strategia prezzi e occupazione", "h": "Come decidere quanto far pagare una camera in base alla domanda"}, {"t": "Mystery client e analisi qualità", "h": "Simulare la visita di un cliente e valutare il servizio come farebbe un esperto"}, {"t": "Tour virtuali con visori VR (XR Lab)", "h": "Walkthrough di hotel, analisi spazi e standard operativi"}, {"t": "Gestione piattaforme online", "h": "Booking.com, Expedia, Airbnb: schede, tariffe, risposte alle recensioni"}], "eng": "Corrispondenza con tour operator · Gestione prenotazioni internazionali · Presentazioni in inglese", "terr": "Hotel 5 stelle Portofino · Resort Cinque Terre · Agriturismi entroterra ligure · Grandi strutture", "jobs": ["Front Office Manager", "Revenue Manager", "Guest Experience Manager", "Hotel Manager", "Responsabile struttura", "Account catene alberghiere"], "url": "https://www.itsturismoliguria.it/corso-gestore-di-strutture-turistico-ricettive/"}, "E": {"name": "Manager di Eventi", "tag": "Il regista delle esperienze", "icon": "🎪", "why": "Hai il gene del coordinatore: vedi già come andrà, gestisci l'imprevisto, ti carichi quando le cose prendono vita. Non ti basta l'idea — vuoi vederla realizzata, e vuoi essere tu a far sì che succeda.", "labs": [{"t": "Progettazione eventi con budget reale", "h": "Brief, timeline, fornitori, controllo costi e scostamenti"}, {"t": "Allestimento fisico degli spazi", "h": "Setup sala, segnaletica, accoglienza, smontaggio"}, {"t": "Regia audio e gestione impianti AV", "h": "Mixer, microfoni, luci, monitor, streaming live"}, {"t": "Produzione video e contenuti social", "h": "Riprese, montaggio, reel per promuovere l'evento"}, {"t": "Sopralluoghi virtuali con visori VR", "h": "Walkthrough di location, progettazione layout prima dell'allestimento"}], "eng": "Presentare eventi a clienti internazionali · Coordinare fornitori esteri · Documenti e briefing in inglese", "terr": "Salone Nautico Genova · Euroflora · Festival culturali liguri · Palazzi congressi · Ville storiche", "jobs": ["Event Planner", "Event Manager", "Conference & Banqueting Mgr", "PR e Communication Mgr", "Wedding Planner", "Destination Manager"], "url": "https://www.itsturismoliguria.it/event-manager/"}}</script>
+<script id="qdata" type="application/json">[{"scene": "Immagina la tua giornata ideale", "text": "Sei per un giorno in un resort di lusso in Liguria. Dove ti trovi più a tuo agio?", "opts": [{"i": "🍽️", "l": "Al ristorante", "t": "Tra sala e cantina, a capire come funziona la macchina: il servizio, i costi, la gestione delle persone", "c": "F"}, {"i": "📊", "l": "All'ufficio operativo", "t": "Dietro le quinte, a vedere come funziona la macchina: prenotazioni, camere, staff, qualità", "c": "G"}, {"i": "🎭", "l": "In sala eventi", "t": "Durante un gala o un congresso, a osservare come tutto si tiene insieme", "c": "E"}]}, {"scene": "Il tuo istinto", "text": "Arriva una richiesta urgente. Quale ti fa venire voglia di dire 'ci penso io'?", "opts": [{"i": "🍷", "l": "Un menu speciale", "t": "Organizzare una cena speciale: scegliere i prodotti, gestire i costi e coordinare il team", "c": "F"}, {"i": "📈", "l": "Un problema da risolvere", "t": "Capire perché l'hotel va meno bene di un mese fa e trovare la soluzione", "c": "G"}, {"i": "🎪", "l": "Un evento da zero", "t": "Organizzare in pochissimo tempo un grande evento aziendale", "c": "E"}]}, {"scene": "In laboratorio", "text": "Tre laboratori davanti a te. Entri per primo senza esitare in…", "opts": [{"i": "🍸", "l": "Lab bar e cantina", "t": "Banco bar attrezzato, cantinetta per i vini, calici, macchina espresso specialty, kit per la latte art", "c": "F"}, {"i": "💻", "l": "Lab simulazione gestione", "t": "Monitor grande, notebook e software per imparare a gestire un hotel: prenotare camere, rispondere ai clienti, organizzare i turni", "c": "G"}, {"i": "🎬", "l": "Lab audio, video ed eventi", "t": "Mixer, microfoni, luci, telecamera e uno spazio da allestire per simulare un evento vero", "c": "E"}]}, {"scene": "Il territorio ligure", "text": "L'ITS ti porta in uscita didattica. Dove senti il momento 'wow'?", "opts": [{"i": "🌿", "l": "Produttori locali", "t": "Una cantina DOC della Riviera di Ponente, un produttore di pesto DOP, un oleificio con olio Taggiasca", "c": "F"}, {"i": "🏛️", "l": "Una struttura ricettiva", "t": "Un hotel 5 stelle di Portofino, un agriturismo nelle Cinque Terre o un resort sulla Riviera", "c": "G"}, {"i": "🎡", "l": "Un grande evento", "t": "Il Salone Nautico, Euroflora o un festival culturale per vedere come funziona dall'interno", "c": "E"}]}, {"scene": "L'inglese professionale", "text": "Usi l'inglese nel tuo lavoro. In quale situazione ti viene più naturale?", "opts": [{"i": "🥂", "l": "Al tavolo o al bar", "t": "Spiegare la carta dei vini o descrivere un piatto tipico ligure a un ospite straniero", "c": "F"}, {"i": "📧", "l": "Nelle comunicazioni", "t": "Scrivere a un tour operator straniero, gestire prenotazioni o rispondere a richieste in inglese", "c": "G"}, {"i": "🎤", "l": "In una presentazione", "t": "Illustrare un evento a un cliente internazionale o coordinare una conferenza con relatori stranieri", "c": "E"}]}, {"scene": "Nel gruppo di lavoro", "text": "Siete in team su un progetto. Quale ruolo prendi senza che nessuno te lo chieda?", "opts": [{"i": "✨", "l": "Penso all'esperienza", "t": "Mi occupo di come si sentirà il cliente: l'atmosfera, i dettagli, i sapori, ciò che rimarrà", "c": "F"}, {"i": "📋", "l": "Organizzo il lavoro", "t": "Scrivo il piano, divido i compiti, tengo d'occhio i tempi e i costi — voglio che tutto fili liscio", "c": "G"}, {"i": "🔗", "l": "Connetto le persone", "t": "Mi assicuro che tutti comunichino, mi occupo delle relazioni e risolvo i momenti di tensione", "c": "E"}]}, {"scene": "I visori VR dell'XR Lab", "text": "Con i visori del laboratorio fai un'esperienza immersiva. Dove vai?", "opts": [{"i": "🍇", "l": "In una cantina", "t": "Tour virtuale tra i vigneti della Riviera Ligure, con degustazione guidata dal produttore", "c": "F"}, {"i": "🏨", "l": "In un hotel", "t": "Walkthrough di una struttura ricettiva per capire spazi, flussi degli ospiti e come migliorarli", "c": "G"}, {"i": "🎪", "l": "In una location eventi", "t": "Sopralluogo virtuale in una villa storica o palazzo congressi per immaginare l'allestimento", "c": "E"}]}, {"scene": "Fine giornata", "text": "Qual è il momento in cui ti sentiresti davvero soddisfatto?", "opts": [{"i": "🕯️", "l": "L'esperienza riuscita", "t": "Aver gestito tutto bene: una cena riuscita, ospiti soddisfatti, costi sotto controllo e team in forma", "c": "F"}, {"i": "📊", "l": "Il risultato raggiunto", "t": "L'hotel ha avuto più prenotazioni e i clienti sono soddisfatti grazie alle mie decisioni", "c": "G"}, {"i": "🎉", "l": "L'evento preso vita", "t": "Aver visto qualcosa che ho organizzato io funzionare perfettamente — spazio, persone, atmosfera", "c": "E"}]}, {"scene": "Lo stage", "text": "Durante lo stage, dove immagini di imparare di più?", "opts": [{"i": "🍽️", "l": "Un ristorante o wine bar", "t": "In sala o al bar di un ristorante gourmet, di un hotel con buona offerta F&B o di una cantina", "c": "F"}, {"i": "🏩", "l": "Un hotel o resort", "t": "Nella reception, nell'ufficio che gestisce prezzi e prenotazioni, o nell'organizzazione dei servizi", "c": "G"}, {"i": "🗓️", "l": "Un'agenzia o centro congressi", "t": "In un'agenzia eventi, teatro, palazzo congressi o nell'ufficio eventi di un grande hotel", "c": "E"}]}, {"scene": "La tua bussola", "text": "Nel mondo del turismo in cui stai per entrare, cosa senti come la sfida più bella che ti aspetta?", "opts": [{"i": "🌱", "l": "La mia identità professionale", "t": "Diventare un punto di riferimento nel mondo F&B: qualcuno che sa gestire un locale, valorizzare i prodotti e far star bene le persone", "c": "F"}, {"i": "🏗️", "l": "Una struttura che funziona davvero", "t": "Costruire sistemi solidi, guidare un team e far girare una struttura ricettiva ai massimi livelli", "c": "G"}, {"i": "🎆", "l": "Momenti che le persone ricordano", "t": "Creare eventi ed esperienze che restano nella memoria di chi li vive e costruiscono la reputazione di chi li organizza", "c": "E"}]}]</script>
+<script id="ddata" type="application/json">{"F-G": "In F&B costruisci l'esperienza sensoriale e gestisci la sala; in Gestione ottimizzi processi e prendi decisioni strategiche.", "G-F": "In Gestione l'attenzione è su sistemi e ottimizzazione; in F&B è sul piacere dell'ospite e il dettaglio del servizio.", "F-E": "In F&B l'esperienza è fatta di sapori e servizio; in Manager di Eventi è fatta di logistica, spazio e pubblico.", "E-F": "In Manager di Eventi organizzi esperienze su scala; in F&B le costruisci attorno al tavolo.", "G-E": "In Gestione costruisci sistemi stabili nel tempo; in Manager di Eventi ogni progetto è una nuova sfida.", "E-G": "In Manager di Eventi ogni progetto è unico; in Gestione costruisci ottimizzazioni durature."}</script>
+
+<script>
+(function () {
+  'use strict';
+
+  var FORMSPREE = 'https://formsubmit.co/ajax/segreteria@itsturismoliguria.it';
+
+  var C    = JSON.parse(document.getElementById('cdata').textContent);
+  var Q    = JSON.parse(document.getElementById('qdata').textContent);
+  var DIFF = JSON.parse(document.getElementById('ddata').textContent);
+
+  var cur = 0;
+  var sc  = { F: 0, G: 0, E: 0 };
+  var topCourse = '';
+
+  function $(id) { return document.getElementById(id); }
+
+  function showScreen(id) {
+    var all = document.querySelectorAll('.screen');
+    for (var i = 0; i < all.length; i++) { all[i].classList.remove('active'); }
+    var el = $(id);
+    el.classList.add('active');
+    el.style.animation = 'none';
+    void el.offsetHeight;
+    el.style.animation = '';
+  }
+
+  /* ── QUIZ ─────────────────────────────────────────────────────────────── */
+  function startQuiz() {
+    cur = 0; sc = { F: 0, G: 0, E: 0 };
+    $('contactInput').value = '';
+    $('contactOk').style.display   = 'none';
+    $('contactSec').style.display  = 'block';
+    $('contactBtn').disabled       = false;
+    showScreen('question');
+    renderQ();
+  }
+
+  function renderQ() {
+    var q = Q[cur];
+    $('qnum').textContent   = (cur + 1 < 10 ? '0' : '') + (cur + 1) + ' / ' + Q.length;
+    $('pfill').style.width  = ((cur + 1) / Q.length * 100) + '%';
+    $('qscene').textContent = q.scene;
+    $('qtxt').textContent   = q.text;
+
+    var opts = q.opts.slice().sort(function () { return Math.random() - 0.5; });
+    var el = $('opts');
+    el.innerHTML = '';
+
+    opts.forEach(function (opt, idx) {
+      var d  = document.createElement('div');
+      d.className = 'opt';
+      d.style.animation = 'up 0.4s ' + (idx * 0.08) + 's ease both';
+      var ic = document.createElement('div'); ic.className = 'oic'; ic.textContent = opt.i;
+      var tx = document.createElement('div');
+      var lb = document.createElement('div'); lb.className = 'olb';   lb.textContent = opt.l;
+      var bd = document.createElement('div'); bd.className = 'obody'; bd.textContent = opt.t;
+      tx.appendChild(lb); tx.appendChild(bd);
+      d.appendChild(ic); d.appendChild(tx);
+      d.addEventListener('click', (function (o, div) {
+        return function () { pickOpt(o.c, div); };
+      }(opt, d)));
+      el.appendChild(d);
+    });
+  }
+
+  function pickOpt(course, el) {
+    el.classList.add('sel');
+    var all = document.querySelectorAll('.opt');
+    for (var i = 0; i < all.length; i++) { all[i].style.pointerEvents = 'none'; }
+    sc[course]++;
+    setTimeout(function () {
+      cur++;
+      if (cur < Q.length) { showScreen('question'); renderQ(); }
+      else { showScreen('loading'); setTimeout(doRedirect, 1900); }
+    }, 380);
+  }
+
+  /* ── REDIRECT ────────────────────────────────────────────────────────── */
+  function doRedirect() {
+    var sorted = Object.keys(sc).sort(function (a, b) { return sc[b] - sc[a]; });
+    var tId = sorted[0];
+    var url = C[tId] && C[tId].url ? C[tId].url : null;
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      showResult();
+    }
+  }
+
+  /* ── RISULTATO ────────────────────────────────────────────────────────── */
+  function showResult() {
+    var sorted = Object.keys(sc).sort(function (a, b) { return sc[b] - sc[a]; });
+    var tId = sorted[0], sId = sorted[1];
+    topCourse = tId;
+    var top = C[tId], sec = C[sId];
+    var showSec = (sc[tId] - sc[sId]) <= 2;
+
+    var labs = top.labs.map(function (l) {
+      return '<div class="litem"><div class="ldot"></div><div class="ltext">' +
+             l.t + '<span class="lhigh">' + l.h + '</span></div></div>';
+    }).join('');
+
+    var jobs = top.jobs.map(function (j) {
+      return '<span class="jpill">' + j + '</span>';
+    }).join('');
+
+    var secHTML = '';
+    if (showSec) {
+      var dk = tId + '-' + sId;
+      var dTxt = DIFF[dk] || DIFF[sId + '-' + tId] || 'I due percorsi condividono molte competenze — la differenza è nel focus operativo quotidiano.';
+      secHTML = '<div class="scard"><div style="display:flex;align-items:center;gap:12px">' +
+        '<div style="font-size:24px">' + sec.icon + '</div>' +
+        '<div><div class="sn">Considera anche: ' + sec.name + '</div>' +
+        '<div class="st">' + sec.tag + '</div></div></div>' +
+        '<div class="sdiff">' + dTxt + '</div>' +
+        '<a class="course-link-sec" href="' + sec.url + '" target="_blank" rel="noopener noreferrer" rel="noopener">Scopri anche ' + sec.name + ' &rarr;</a>' +
+      '</div>';
+    }
+
+    $('rcontent').innerHTML =
+      '<div class="rcard">' +
+        '<div class="rch"><div class="ric">' + top.icon + '</div>' +
+        '<div><div class="rcn">' + top.name + '</div><div class="rct">' + top.tag + '</div></div></div>' +
+        '<div class="rwhy">' + top.why + '</div>' +
+        '<div class="rsec">In aula e in laboratorio</div>' +
+        '<div class="rlabs">' + labs + '</div>' +
+        '<div class="dline"></div>' +
+        '<div class="rsec">Inglese professionale</div>' +
+        '<div class="rwhy" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1.5px solid rgba(29,53,87,.08)">' + top.eng + '</div>' +
+        '<div class="rsec">Visite nel territorio ligure</div>' +
+        '<div class="rwhy" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1.5px solid rgba(29,53,87,.08)">' + top.terr + '</div>' +
+        '<div class="rsec">Sbocchi professionali</div>' +
+        '<div class="rjobs">' + jobs + '</div>' +
+        '<div class="dline"></div>' +
+        '<a class="course-link" href="' + top.url + '" target="_blank" rel="noopener noreferrer" rel="noopener">' +
+        '&#127979; Scopri tutto il corso sul sito ITS &rarr;</a>' +
+      '</div>' + secHTML;
+
+    $('contactCourseName').textContent = top.name;
+    showScreen('result');
+    setTimeout(function () {
+      var cs = $('contactSec');
+      if (cs) { cs.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }, 700);
+  }
+
+  /* ── FORM CONTATTO ────────────────────────────────────────────────────── */
+  function submitContact() {
+    var val = $('contactInput').value.trim();
+    if (!val) {
+      $('contactInput').style.borderColor = 'var(--gold)';
+      $('contactInput').focus();
+      return;
+    }
+    $('contactBtn').disabled = true;
+    $('contactBtn').textContent = 'Invio in corso…';
+
+    var corso = C[topCourse] ? C[topCourse].name : topCourse;
+    var body  = { contatto: val, corso_consigliato: corso };
+
+    fetch(FORMSPREE, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body:    JSON.stringify(body)
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.ok || data.next || data.success === 'true' || data.success === true) {
+        $('contactSec').querySelector('.contact-prompt').style.display    = 'none';
+        $('contactSec').querySelector('.contact-sub').style.display      = 'none';
+        $('contactSec').querySelector('.contact-input').style.display    = 'none';
+        $('contactSec').querySelector('.contact-privacy').style.display  = 'none';
+        $('contactBtn').style.display  = 'none';
+        $('contactOk').style.display   = 'block';
+      } else {
+        $('contactBtn').disabled  = false;
+        $('contactBtn').textContent = 'Invia →';
+        alert('Qualcosa non ha funzionato. Riprova o contattaci direttamente a segreteria@itsturismoliguria.it');
+      }
+    })
+    .catch(function () {
+      $('contactBtn').disabled  = false;
+      $('contactBtn').textContent = 'Invia →';
+      alert('Controlla la connessione e riprova.');
+    });
+  }
+
+  /* ── LISTENERS ────────────────────────────────────────────────────────── */
+  $('startBtn').addEventListener('click',   startQuiz);
+  $('restartBtn').addEventListener('click', startQuiz);
+  $('homeBtn').addEventListener('click',    function () { showScreen('intro'); });
+  $('contactBtn').addEventListener('click', submitContact);
+  $('contactInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); submitContact(); }
+  });
+
+}());
+</script>
+</body>
+</html>
